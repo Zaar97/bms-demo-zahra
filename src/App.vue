@@ -1,85 +1,144 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+  <div>
+    <div class="container">
+      <div class="calculator">
+        <form>
+          <div class="display">
+            <input type="text" v-model="display" readonly>
+          </div>
+          <div>
+            <input type="button" value="AC" @click="clearField" class="operator">
+            <input type="button" value="DE" @click="deleteCharacter" class="operator">
+            <input type="button" value="." @click="appendCharacter('.') " class="operator">
+            <input type="button" value="/" @click="appendCharacter('/') " class="operator">
+          </div>
+          <div>
+            <input type="button" value="7" @click="appendCharacter('7')">
+            <input type="button" value="8" @click="appendCharacter('8')">
+            <input type="button" value="9" @click="appendCharacter('9')">
+            <input type="button" value="*" @click="appendCharacter('*')" class="operator">
+          </div>
+          <div>
+            <input type="button" value="4" @click="appendCharacter('4')">
+            <input type="button" value="5" @click="appendCharacter('5')">
+            <input type="button" value="6" @click="appendCharacter('6')">
+            <input type="button" value="-" @click="appendCharacter('-')" class="operator">
+          </div>
+          <div>
+            <input type="button" value="1" @click="appendCharacter('1')">
+            <input type="button" value="2" @click="appendCharacter('2')">
+            <input type="button" value="3" @click="appendCharacter('3')">
+            <input type="button" value="+" @click="appendCharacter('+')" class="operator">
+          </div>
+          <div>
+            <input type="button" value="00" @click="appendCharacter('00')">
+            <input type="button" value="0" @click="appendCharacter('0')">
+            <input type="button" value="=" @click="calculateResult" class="equal operator">
+          </div>
+        </form>
+      </div>
     </div>
-  </header>
-
-  <RouterView />
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+<script>
+export default {
+  data() {
+    return {
+      display: '',
+    };
+  },
+  methods: {
+    clearField() {
+      this.display = '';
+    },
+    appendCharacter(value) {
+      this.display += value;
+    },
+    deleteCharacter() {
+      this.display = this.display.slice(0, -1);
+    },
+    calculateResult() {
+      try {
+        this.display = eval(this.display).toString();
+      } catch (error) {
+        this.display = 'Error';
+      }
+    },
+  },
+};
+</script>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+html, body {
+  height: 100%;
+  background: url('1325121.png') center center fixed; /* Adjust the path accordingly */
+  background-size: cover;
 }
 
-nav {
+.container {
   width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+  height: 100%;
+  background: url('1325725.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
+.calculator {
+  background: rgba(95, 111, 82, 0.8); /* Adjusted background color with opacity */
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%; /* Take up the full width of the container */
+  max-width: 400px; /* Limit the maximum width */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
 
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
+.calculator form input {
   border: 0;
+  outline: 0;
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  box-shadow: -8px -8px 15px rgba(255, 255, 255, 0.1), 5px 5px 15px rgba(0, 0, 0, 0.2);
+  background: transparent;
+  font-size: 20px;
+  color: #fff;
+  cursor: pointer;
+  margin: 10px;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+form .display {
+  display: flex;
+  justify-content: flex-end;
+  margin: 20px 0;
+}
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+form .display input {
+  text-align: right;
+  flex: 1;
+  font-size: 45px;
+  box-shadow: none;
+}
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+form input.equal {
+  width: 100%; /* Take up the full width of the container */
+  max-width: none; /* Remove the maximum width */
+}
 
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+form input.operator {
+  color: #33ffd8;
 }
 </style>
